@@ -1,5 +1,6 @@
 package com.example.marija.blogtask;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,7 +33,11 @@ public class BlogActivity extends AppCompatActivity implements BlogViewInter {
         recyclerAdapter = new RecyclerAdapter(this, new ArrayList<BlogItem>(0), new RecyclerAdapter.PostItemListener() {
             @Override
             public void onPostClick(long id) {
-                Toast.makeText(BlogActivity.this, "Clicked id %d "+id, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(BlogActivity.this, DetailsActivity.class);
+                intent.putExtra(Preferences.Keys.TOKEN, token);
+                intent.putExtra(Preferences.Keys._ID, id);
+                startActivity(intent);
+//                Toast.makeText(BlogActivity.this, "Clicked id %d "+id, Toast.LENGTH_SHORT).show();
             }
         });
 

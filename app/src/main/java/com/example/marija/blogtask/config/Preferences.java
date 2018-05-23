@@ -21,6 +21,7 @@ public class Preferences {
 
         public interface Keys {
             final String TOKEN = "token";
+            final String _ID = "id";
             final String NOT_LOGGED_IN = "NOT_LOGGED";
             final String LOGGED_IN = "LOGGED_IN";
         }
