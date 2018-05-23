@@ -1,5 +1,7 @@
 package com.example.marija.blogtask;
 
+import android.content.SharedPreferences;
+
 import com.example.marija.blogtask.model.Token;
 
 /**
@@ -31,6 +33,7 @@ public class LoginPres implements PresenterInterface, LoginModelInter.OnFinishLi
     @Override
     public void onFinish(Token token) {
         viewInterface.successLogin(token);
+
     }
 
     @Override

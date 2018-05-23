@@ -1,13 +1,18 @@
 package com.example.marija.blogtask.config;
 
 
+import com.example.marija.blogtask.model.BlogItem;
 import com.example.marija.blogtask.model.Token;
 import com.example.marija.blogtask.model.UserPass;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import rx.Observable;
 
 /**
  * Created by Marija on 23/5/2018.
@@ -20,6 +25,10 @@ public interface BlogService {
                         @Header("Content-Length") int content_lng,
                         @Header("Accept") String accept,
                         @Body UserPass userPass);
+
+    @GET("/blogs")
+    Observable<List<BlogItem>> getPosts(@Header("X-Authorize") String token,
+                                        @Header("Accept") String accept);
 
 
 }
