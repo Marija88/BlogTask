@@ -36,7 +36,7 @@ public class DetailsPres implements DetailsPresInter, DetailsModel.OnFinishListe
     }
 
     @Override
-    public void onFailure() {
-        viewInterface.showMessage("Error");
+    public void onFailure(String s) {
+        viewInterface.showMessage(s);
     }
 }

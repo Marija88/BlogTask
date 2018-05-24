@@ -12,7 +12,7 @@ import java.util.List;
 public interface DetailsModelInter {
     interface OnFinishListener{
         void onFinish(Content content);
-        void onFailure();
+        void onFailure(String s);
     }
 
     void getData(OnFinishListener listener, String token, long id);

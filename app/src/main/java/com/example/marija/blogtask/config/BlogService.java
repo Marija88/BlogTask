@@ -33,7 +33,7 @@ public interface BlogService {
                                         @Header("Accept") String accept);
 
     @GET
-    Observable<Content> getItemDetails(@Header("X-Authorize") String auth,
+    Call<Content> getItemDetails(@Header("X-Authorize") String auth,
                                        @Header("Accept") String accept,
                                        @Url String url);
 

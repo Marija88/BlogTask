@@ -3,6 +3,8 @@ package com.example.marija.blogtask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.example.marija.blogtask.config.Preferences;
@@ -41,11 +43,14 @@ public class DetailsActivity extends AppCompatActivity implements DetailsViewInt
 
     @Override
     public void showData(Content content) {
-        textView.setText(Html.fromHtml(content.getContent()));
+        if (content != null)
+            textView.setText(Html.fromHtml(content.getContent()));
     }
 
     @Override
     public void showMessage(String s) {
-
+        textView.setText(s);
     }
+
+
 }

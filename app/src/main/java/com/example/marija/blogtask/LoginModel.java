@@ -28,8 +28,9 @@ public class LoginModel implements LoginModelInter {
                     public void onResponse(Call<Token> call, Response<Token> response) {
                         if (response.code() == 200)
                             listener.onFinish(response.body());
-                        else
+                        else if(response.code() == 401)
                             listener.onFailure("Incoret username or password");
+                        else listener.onFailure("Error!");
                     }
 
                     @Override

@@ -3,11 +3,40 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/yellow</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="actionBarDivider">@color/yellow</item>
+        <item name="android:windowBackground">@color/darkGrey</item>
+        <item name="android:textColor">@color/textColor</item>
+        <item name="android:editTextColor">@color/yellowDark</item>
+        <item name="android:textColorHint">@color/lightBlue</item>
+        <item name="colorControlNormal">@color/lightBlue</item>
+        <item name="titleTextColor">@color/lightBlue</item>
+        <item name="android:itemBackground">@color/darkGrey</item>
+        <item name="android:itemTextAppearance">@style/colorMenuItem</item>
+        <!--<item name="alertDialogStyle">@style/customDialogStyle</item>-->
+
     </style>
 
+
+    <style name="CustomButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/yellow</item>
+    </style>
+    <style name="customDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">#FFC107</item>
+        <item name="titleTextColor">@color/lightBlue</item>
+        <item name="android:textColorPrimary">@color/lightBlue</item>
+        <item name="android:background">@color/darkGrey</item>
+        <item name="android:buttonStyle">@style/CustomButtonStyle</item>
+
+    </style>
+
+    
+
+    <style name="colorMenuItem" parent="@android:style/TextAppearance.Widget.IconMenu.Item">
+        <item name="android:textColor">@color/yellow</item>
+    </style>
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
