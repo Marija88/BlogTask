@@ -30,7 +30,7 @@ public interface BlogService {
 
     @GET("/blogs")
     Observable<List<BlogItem>> getPosts(@Header("X-Authorize") String token,
-                                        @Header("Accept") String accept);
+                                    @Header("Accept") String accept);
 
     @GET
     Call<Content> getItemDetails(@Header("X-Authorize") String auth,

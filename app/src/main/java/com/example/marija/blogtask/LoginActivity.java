@@ -3,8 +3,10 @@ package com.example.marija.blogtask;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 
@@ -26,7 +28,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.marija.blogtask.config.Preferences;
+import com.example.marija.blogtask.database.AppDatabase;
 import com.example.marija.blogtask.model.Token;
+import com.example.marija.blogtask.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +45,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private AppDatabase appDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +54,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         mPasswordView = (EditText) findViewById(R.id.password);
+
 
         SharedPreferences preferences = getSharedPreferences(Preferences.Keys.LOGGED_IN, MODE_PRIVATE);
         String token = preferences.getString(Preferences.Keys.TOKEN, null);
@@ -70,7 +76,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
-        loginPres = new LoginPres(this,new LoginModel());
+        loginPres = new LoginPres(this,new LoginModel(), AppDatabase.getInstance(this));
     }
 
 
@@ -78,13 +84,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     protected void onDestroy() {
         super.onDestroy();
         loginPres.onDestroy();
+//        AppDatabase.destroyInstance();
     }
 
-    /**
-     * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.
-     */
     private void attemptLogin() {
         mEmailView.setError(null);
         mPasswordView.setError(null);
@@ -98,7 +100,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         // Check for a valid password, if the user entered one.
         if (TextUtils.isEmpty(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
+            mPasswordView.setError(getString(R.string.error_field_required));
             focusView = mPasswordView;
             cancel = true;
         }else if(!isPasswordValid(password)) {
@@ -107,7 +109,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             cancel = true;
         }
 
-        // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
             mEmailView.setError(getString(R.string.error_field_required));
             focusView = mEmailView;
@@ -117,20 +118,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             focusView = mEmailView;
             cancel = true;
         }
-
         if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
             focusView.requestFocus();
         } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
+            showProgress(true);
             login(email, password);
-//            showProgress(true);
-//            Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show();
-
-//            mAuthTask = new UserLoginTask(email, password);
-//            mAuthTask.execute((Void) null);
         }
     }
 
@@ -146,7 +138,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Shows the progress UI and hides the login form.
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    private void showProgress(final boolean show) {
+    public void showProgress(final boolean show) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
         // for very easy animations. If available, use these APIs to fade-in
         // the progress spinner.
@@ -171,8 +163,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 }
             });
         } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
             mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
@@ -181,17 +171,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         return new CursorLoader(this,
-                // Retrieve data rows for the device user's 'profile' contact.
                 Uri.withAppendedPath(ContactsContract.Profile.CONTENT_URI,
                         ContactsContract.Contacts.Data.CONTENT_DIRECTORY), ProfileQuery.PROJECTION,
-
-                // Select only email addresses.
                 ContactsContract.Contacts.Data.MIMETYPE +
                         " = ?", new String[]{ContactsContract.CommonDataKinds.Email
                 .CONTENT_ITEM_TYPE},
-
-                // Show primary email addresses first. Note that there won't be
-                // a primary email address if the user hasn't specified one.
                 ContactsContract.Contacts.Data.IS_PRIMARY + " DESC");
     }
 
@@ -203,7 +187,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             emails.add(cursor.getString(ProfileQuery.ADDRESS));
             cursor.moveToNext();
         }
-
         addEmailsToAutoComplete(emails);
     }
 
@@ -230,6 +213,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         Intent intent = new Intent(this, BlogActivity.class);
         intent.putExtra(Preferences.Keys.TOKEN, token.getToken());
         startActivity(intent);
+
         finish();
 
 //        Toast.makeText(this, "Success "+token, Toast.LENGTH_SHORT).show();
@@ -237,26 +221,34 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     @Override
     public void showError(String error) {
-        Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+        DialogBuilder.createAlertDialog(this, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                switch (i){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        dialogInterface.dismiss();
+                        break;
+                }
+            }
+        }, error, "Error!", "Try again", null).show();
+//        Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void login(String email, String password) {
+        User user = new User(1, email, password);
+//        appDatabase = AppDatabase.getInstance(this);
+//        appDatabase.userDao().insert(user);
         loginPres.onClicked(email, password);
+        showProgress(false);
     }
-
-
-
     private interface ProfileQuery {
         String[] PROJECTION = {
                 ContactsContract.CommonDataKinds.Email.ADDRESS,
                 ContactsContract.CommonDataKinds.Email.IS_PRIMARY,
         };
-
         int ADDRESS = 0;
         int IS_PRIMARY = 1;
     }
-
-
 }
 

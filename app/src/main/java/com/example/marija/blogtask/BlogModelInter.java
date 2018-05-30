@@ -12,7 +12,7 @@ public interface BlogModelInter {
 
     interface OnFinishListener{
         void onFinish(List<BlogItem> list);
-        void onFailure();
+        void onFailure(String e);
     }
 
     void getData(OnFinishListener listener, String token);

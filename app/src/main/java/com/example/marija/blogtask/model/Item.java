@@ -2,33 +2,38 @@ package com.example.marija.blogtask.model;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by Marija on 23/5/2018.
+ * Created by Marija on 30/5/2018.
  */
 
-@Entity
-public class BlogItem {
+//@Entity
+public class Item {
 
     @PrimaryKey(autoGenerate = true)
-    @SerializedName("id")
-    @Expose
     private Integer id;
     @ColumnInfo
-    @SerializedName("title")
-    @Expose
     private String title;
     @ColumnInfo
-    @SerializedName("image_url")
-    @Expose
     private String imageUrl;
+
+    public Item() {
+    }
+    @Ignore
+    public Item(String title, String imageUrl, String description) {
+//        this.id = id;
+        this.title = title;
+        this.imageUrl = imageUrl;
+        this.description = description;
+    }
+
     @ColumnInfo
-    @SerializedName("description")
-    @Expose
     private String description;
 
     public Integer getId() {

@@ -15,8 +15,27 @@
         <item name="titleTextColor">@color/lightBlue</item>
         <item name="android:itemBackground">@color/darkGrey</item>
         <item name="android:itemTextAppearance">@style/colorMenuItem</item>
-        <!--<item name="alertDialogStyle">@style/customDialogStyle</item>-->
 
+        <!--<item name="alertDialogStyle">@style/customDialogStyle</item>-->
+    </style>
+
+
+    <style name="AppThemeLight" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/yellow</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="actionBarDivider">@color/yellow</item>
+        <item name="android:windowBackground">@color/lightBlue</item>
+        <item name="android:textColor">@color/textColor</item>
+        <item name="android:editTextColor">@color/yellowDark</item>
+        <item name="android:textColorHint">@color/darkGrey</item>
+        <item name="colorControlNormal">@color/darkGrey</item>
+        <item name="titleTextColor">@color/darkGrey</item>
+        <item name="android:itemBackground">@color/lightBlue</item>
+        <item name="android:itemTextAppearance">@style/colorMenuItem</item>
+
+        <!--<item name="alertDialogStyle">@style/customDialogStyle</item>-->
     </style>
 
 

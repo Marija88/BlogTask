@@ -14,4 +14,5 @@ public interface LoginModelInter {
     }
 
     void getData(String email, String password, OnFinishListener listener);
+
 }

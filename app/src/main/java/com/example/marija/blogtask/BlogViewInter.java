@@ -1,5 +1,6 @@
 package com.example.marija.blogtask;
 
+import com.example.marija.blogtask.events.ItemsEvents;
 import com.example.marija.blogtask.model.BlogItem;
 
 import java.util.List;
@@ -12,4 +13,5 @@ public interface BlogViewInter {
 
     void showData(List<BlogItem> items);
     void showMessage(String s);
+    void showProgress(boolean b);
 }

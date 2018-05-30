@@ -28,7 +28,9 @@ public class DetailsModel implements DetailsModelInter {
                     public void onResponse(Call<Content> call, Response<Content> response) {
                         if (response.code() == 200)
                             listener.onFinish(response.body());
-                        else listener.onFailure(response.code()+"");
+                        else if (response.code() == 404){
+                            listener.onFailure("Page not found");
+                        }else listener.onFailure(response.code()+"");
                     }
 
                     @Override

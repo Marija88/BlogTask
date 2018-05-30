@@ -4,7 +4,9 @@ import android.util.Log;
 
 
 import com.example.marija.blogtask.config.ApiUtil;
+import com.example.marija.blogtask.database.AppDatabase;
 import com.example.marija.blogtask.model.Token;
+import com.example.marija.blogtask.model.User;
 import com.example.marija.blogtask.model.UserPass;
 
 import retrofit2.Call;
@@ -20,17 +22,18 @@ import rx.schedulers.Schedulers;
 
 public class LoginModel implements LoginModelInter {
     @Override
-    public void getData(String email, String password, final OnFinishListener listener) {
+    public void getData(final String email, final String password, final OnFinishListener listener) {
 
         ApiUtil.getService().getToken("application/json", 68,"application/json",new UserPass(email, password)).
                 enqueue(new Callback<Token>() {
                     @Override
                     public void onResponse(Call<Token> call, Response<Token> response) {
-                        if (response.code() == 200)
+                        if (response.code() == 200) {
                             listener.onFinish(response.body());
-                        else if(response.code() == 401)
-                            listener.onFailure("Incoret username or password");
-                        else listener.onFailure("Error!");
+//                            appDatabase.userDao().insert(new User(1, email, password));
+                        }else if(response.code() == 401)
+                            listener.onFailure("Incorrect username or password");
+                        else listener.onFailure(response.code()+"");
                     }
 
                     @Override
@@ -41,4 +44,6 @@ public class LoginModel implements LoginModelInter {
 
 
     }
+
+
 }

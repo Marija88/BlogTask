@@ -8,4 +8,5 @@ public interface BlogPresInter {
 
     void onResume(String token);
     void onDestroy();
+    void onPause();
 }

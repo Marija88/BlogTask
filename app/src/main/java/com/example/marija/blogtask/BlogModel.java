@@ -6,7 +6,10 @@ import com.example.marija.blogtask.config.ApiUtil;
 import com.example.marija.blogtask.model.BlogItem;
 
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
+import retrofit2.HttpException;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -29,7 +32,7 @@ public class BlogModel implements BlogModelInter {
 
                     @Override
                     public void onError(Throwable e) {
-                        listener.onFailure();
+                        listener.onFailure(e+"");
                     }
 
                     @Override
@@ -38,5 +41,7 @@ public class BlogModel implements BlogModelInter {
                     }
                 });
     }
+
+
 
 }

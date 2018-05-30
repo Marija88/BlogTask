@@ -11,5 +11,6 @@ public interface LoginViewInter {
 
     void successLogin(Token token);
     void showError(String error);
+    void showProgress(boolean b);
     void login(String email, String password);
 }

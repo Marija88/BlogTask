@@ -1,5 +1,6 @@
 package com.example.marija.blogtask;
 
+import android.content.DialogInterface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
@@ -49,7 +50,21 @@ public class DetailsActivity extends AppCompatActivity implements DetailsViewInt
 
     @Override
     public void showMessage(String s) {
-        textView.setText(s);
+        DialogBuilder.createAlertDialog(this, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                switch (i){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        dialogInterface.dismiss();
+                        detailsPres.onResume(token, id);
+                        break;
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        dialogInterface.dismiss();
+                        finish();
+                        break;
+                }
+            }
+        }, s, "Error!", "Try again", "Ok").show();
     }
 
 
