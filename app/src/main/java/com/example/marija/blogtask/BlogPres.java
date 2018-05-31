@@ -28,6 +28,7 @@ public class BlogPres implements BlogModelInter.OnFinishListener, BlogPresInter 
     private BlogViewInter viewInterface;
     private BlogModelInter modelInterface;
     private List<ItemEvents> itemList;
+    private AppDatabase appDatabase;
     private Executor executor = Executors.newSingleThreadExecutor();
     BlogPres(BlogViewInter viewInterface, BlogModelInter modelInterface){
         this.modelInterface = modelInterface;
@@ -37,6 +38,7 @@ public class BlogPres implements BlogModelInter.OnFinishListener, BlogPresInter 
     public void onResume(String token) {
         viewInterface.showProgress(true);
         modelInterface.getData(this, token);
+        appDatabase = AppDatabase.getInstance((Context) viewInterface);
 
     }
 
@@ -60,7 +62,6 @@ public class BlogPres implements BlogModelInter.OnFinishListener, BlogPresInter 
         executor.execute(new Runnable() {
             @Override
             public void run() {
-                AppDatabase appDatabase = AppDatabase.getInstance((Context) viewInterface);
                 int count = appDatabase.itemsDao().countItems();
                 if (count == 0) {
                     appDatabase.itemsDao().insertItems(list);
@@ -76,7 +77,6 @@ public class BlogPres implements BlogModelInter.OnFinishListener, BlogPresInter 
         executor.execute(new Runnable() {
             @Override
             public void run() {
-                AppDatabase appDatabase = AppDatabase.getInstance((Context) viewInterface);
                 List<BlogItem> itemList = appDatabase.itemsDao().getAllItems();
                 EventBus.getDefault().post(itemList);
             }

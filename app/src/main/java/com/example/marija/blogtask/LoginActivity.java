@@ -84,7 +84,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     protected void onDestroy() {
         super.onDestroy();
         loginPres.onDestroy();
-//        AppDatabase.destroyInstance();
     }
 
     private void attemptLogin() {
@@ -236,9 +235,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     @Override
     public void login(String email, String password) {
-        User user = new User(1, email, password);
-//        appDatabase = AppDatabase.getInstance(this);
-//        appDatabase.userDao().insert(user);
         loginPres.onClicked(email, password);
         showProgress(false);
     }

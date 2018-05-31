@@ -28,7 +28,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".DetailsActivity" />
         <activity android:name=".AccountActivity"
-            android:parentActivityName=".BlogActivity"/>
+            />
     </application>
 
 </manifest>

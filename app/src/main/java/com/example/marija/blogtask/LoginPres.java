@@ -18,6 +18,8 @@ public class LoginPres implements PresenterInterface, LoginModelInter.OnFinishLi
     private LoginViewInter viewInterface;
     private LoginModelInter modelInterface;
     private AppDatabase appDatabase;
+    private String username = null;
+    private String password = null;
     private Executor executor = Executors.newSingleThreadExecutor();
     LoginPres(LoginViewInter viewInterface, LoginModelInter modelInterface, AppDatabase appDatabase){
         this.modelInterface = modelInterface;
@@ -37,12 +39,9 @@ public class LoginPres implements PresenterInterface, LoginModelInter.OnFinishLi
     public void onClicked(final String email, final String password) {
         viewInterface.showProgress(true);
         modelInterface.getData(email, password, this);
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                appDatabase.userDao().insert(new User(1, email, password));
-            }
-        });
+        username = email;
+        this.password = password;
+
 
 
     }
@@ -52,6 +51,12 @@ public class LoginPres implements PresenterInterface, LoginModelInter.OnFinishLi
     public void onFinish(Token token) {
         viewInterface.successLogin(token);
         viewInterface.showProgress(false);
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                appDatabase.userDao().insert(new User(1, username, password));
+            }
+        });
 
     }
 

@@ -22,6 +22,7 @@ public class AccountActivity extends AppCompatActivity implements DBViewInter {
     protected void onDestroy() {
         super.onDestroy();
         presenter.onDestroy();
+        AppDatabase.destroyInstance();
     }
 
     @Override
